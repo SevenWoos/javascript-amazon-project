@@ -1,4 +1,8 @@
-import {cart, removeFromCart, updateDeliveryOption} from '../../data/cart.js';
+import {
+  cart, 
+  removeFromCart, 
+  updateDeliveryOption, 
+  updateQuantity} from '../../data/cart.js';
 import {products, getProduct} from '../../data/products.js';
 import {formatCurrency} from '../utils/money.js';
 import {hello} from 'https://unpkg.com/supersimpledev@1.0.1/hello.esm.js';
@@ -160,6 +164,13 @@ document.querySelectorAll('.js-save-link')
       // Get the quantity from clicking save.
       const quantityInput = document.querySelector(`.js-quantity-input-${productId}`);
       const newQuantity = Number(quantityInput.value);
+
+      updateQuantity(productId, newQuantity);
+
+      // Update the data(model) and regenerate the HTML
+      renderCheckoutHeader();
+      renderOrderSummary();
+      renderPaymentSummary();
     });
   });
 
