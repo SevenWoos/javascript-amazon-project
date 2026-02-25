@@ -142,7 +142,8 @@ export function renderOrderSummary() {
       updateLink.addEventListener('click', () => {
         const productId = updateLink.dataset.productId;
 
-        console.log(productId);
+        const container = document.querySelector(`.js-cart-item-container-${productId}`);
+        container.classList.add('is-editing-quantity');
       });
     });
 
