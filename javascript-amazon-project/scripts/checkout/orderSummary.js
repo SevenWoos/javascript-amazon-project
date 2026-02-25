@@ -54,11 +54,12 @@ export function renderOrderSummary() {
                 Quantity: <span class="quantity-label">${cartItem.quantity}</span>
               </span>
               <span class="update-quantity-link link-primary js-update-link"
-              data-product-id="${matchingProduct.id}">
+                data-product-id="${matchingProduct.id}">
                 Update
               </span>
               <input class="quantity-input">
-              <span class="save-quantity-link link-primary">Save</span>
+              <span class="save-quantity-link link-primary js-save-link"
+                data-product-id="${matchingProduct.id}">Save</span>
               <span class="delete-quantity-link link-primary js-delete-link" data-product-id="${matchingProduct.id}">
                 Delete
               </span>
@@ -76,87 +77,97 @@ export function renderOrderSummary() {
     `;
   });
 
-  function deliveryOptionsHTML(matchingProduct, cartItem) {
-    let html = ``;
+function deliveryOptionsHTML(matchingProduct, cartItem) {
+  let html = ``;
 
-    deliveryOptions.forEach((deliveryOption) => {
-      const today = dayjs();
-      const deliveryDate = today.add(
-        deliveryOption.deliveryDays, 
-        'days'
-      );
-      const dateString = deliveryDate.format(
-        'dddd, MMMM D'
-      );
+  deliveryOptions.forEach((deliveryOption) => {
+    const today = dayjs();
+    const deliveryDate = today.add(
+      deliveryOption.deliveryDays, 
+      'days'
+    );
+    const dateString = deliveryDate.format(
+      'dddd, MMMM D'
+    );
 
-      const priceString = deliveryOption.priceCents === 0 
-        ? 'FREE'
-        : `$${formatCurrency(deliveryOption.priceCents)} -`;
+    const priceString = deliveryOption.priceCents === 0 
+      ? 'FREE'
+      : `$${formatCurrency(deliveryOption.priceCents)} -`;
 
-      const isChecked = deliveryOption.id === cartItem.deliveryOptionId
-      
-      html += `
-        <div class="delivery-option js-delivery-option"
-          data-product-id="${matchingProduct.id}"
-          data-delivery-option-id=${deliveryOption.id}>
-          <input type="radio"
-            ${isChecked ? 'checked' : ''}
-            class="delivery-option-input"
-            name="delivery-option-${matchingProduct.id}">
-          <div>
-            <div class="delivery-option-date">
-              ${dateString}
-            </div>
-            <div class="delivery-option-price">
-              ${priceString} Shipping
-            </div>
+    const isChecked = deliveryOption.id === cartItem.deliveryOptionId
+    
+    html += `
+      <div class="delivery-option js-delivery-option"
+        data-product-id="${matchingProduct.id}"
+        data-delivery-option-id=${deliveryOption.id}>
+        <input type="radio"
+          ${isChecked ? 'checked' : ''}
+          class="delivery-option-input"
+          name="delivery-option-${matchingProduct.id}">
+        <div>
+          <div class="delivery-option-date">
+            ${dateString}
+          </div>
+          <div class="delivery-option-price">
+            ${priceString} Shipping
           </div>
         </div>
-      `;
-    });
-
-    return html;
-  };
-
-  document.querySelector('.js-order-summary')
-    .innerHTML = cartSummaryHTML;
-
-  document.querySelectorAll('.js-delete-link')
-    .forEach((link) => {
-      link.addEventListener('click', () => {
-        const productId = link.dataset.productId;
-        removeFromCart(productId);
-
-        const container = document.querySelector(`.js-cart-item-container-${productId}`);
-        container.remove();
-
-        // Update the data(model) and regenerate the HTML
-        renderCheckoutHeader();
-        renderPaymentSummary();
-      });
+      </div>
+    `;
   });
 
-  // Get all "Update" links from page and add "click" event listeners.
-  document.querySelectorAll('.js-update-link')
-    .forEach((updateLink) => {
-      updateLink.addEventListener('click', () => {
-        const productId = updateLink.dataset.productId;
+  return html;
+};
 
-        const container = document.querySelector(`.js-cart-item-container-${productId}`);
-        container.classList.add('is-editing-quantity');
-      });
+document.querySelector('.js-order-summary')
+  .innerHTML = cartSummaryHTML;
+
+document.querySelectorAll('.js-delete-link')
+  .forEach((link) => {
+    link.addEventListener('click', () => {
+      const productId = link.dataset.productId;
+      removeFromCart(productId);
+
+      const container = document.querySelector(`.js-cart-item-container-${productId}`);
+      container.remove();
+
+      // Update the data(model) and regenerate the HTML
+      renderCheckoutHeader();
+      renderPaymentSummary();
     });
+});
 
+// Get all "Update" links from page and add "click" event listeners.
+document.querySelectorAll('.js-update-link')
+  .forEach((updateLink) => {
+    updateLink.addEventListener('click', () => {
+      const productId = updateLink.dataset.productId;
 
-  document.querySelectorAll('.js-delivery-option')
-    .forEach((element) => {
-      element.addEventListener('click', () => {
-        const {productId, deliveryOptionId} = element.dataset;
-        updateDeliveryOption(productId, deliveryOptionId);
-
-        // Update the data(model) and regenerate the HTML
-        renderOrderSummary();
-        renderPaymentSummary();
-      });
+      const container = document.querySelector(`.js-cart-item-container-${productId}`);
+      container.classList.add('is-editing-quantity');
     });
+  });
+
+// Add event listeners to all "save" links.
+document.querySelectorAll('.js-save-link')
+  .forEach((saveLink) => {
+    saveLink.addEventListener('click', () => {
+      const productId = saveLink.dataset.productId;
+
+      const container = document.querySelector(`.js-cart-item-container-${productId}`);
+      container.classList.remove('is-editing-quantity');
+    });
+  });
+
+document.querySelectorAll('.js-delivery-option')
+  .forEach((element) => {
+    element.addEventListener('click', () => {
+      const {productId, deliveryOptionId} = element.dataset;
+      updateDeliveryOption(productId, deliveryOptionId);
+
+      // Update the data(model) and regenerate the HTML
+      renderOrderSummary();
+      renderPaymentSummary();
+    });
+  });
 };
