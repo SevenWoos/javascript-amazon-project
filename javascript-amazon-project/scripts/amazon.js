@@ -81,7 +81,12 @@ document.querySelectorAll('.js-add-to-cart')
       // The kebab case gets CONVERTED to CAMEL CASE
       const productId = button.dataset.productId;
 
-      addToCart(productId);
+      const quantitySelector = document.querySelector(
+        `.js-quantity-selector-${productId}`
+      );
+      const quantity = Number(quantitySelector.value);
+
+      addToCart(productId, quantity);
       updateCartQuantity();
     });
   });
