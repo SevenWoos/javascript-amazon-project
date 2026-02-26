@@ -1,4 +1,4 @@
-import {formatCurrency} from '../scripts/utils/money.js';
+import {formatCurrency} from '../../scripts/utils/money.js';
 // Testing Framework = external library that helps us write tests easier.
 
 console.log('test suite: formatCurrency');
