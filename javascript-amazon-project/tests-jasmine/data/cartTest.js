@@ -15,6 +15,7 @@ describe('test suite: addToCart', () => {
     });
     loadFromStorage();
 
+    // addToCart('e43638ce-6aa0-4b85-b27f-e1d07eb678c6');
     addToCart('e43638ce-6aa0-4b85-b27f-e1d07eb678c6', 1);
     expect(cart.length).toEqual(1);
     expect(localStorage.setItem).toHaveBeenCalledTimes(1);
@@ -30,6 +31,7 @@ describe('test suite: addToCart', () => {
     });
     loadFromStorage();
 
+    // addToCart('e43638ce-6aa0-4b85-b27f-e1d07eb678c6');
     addToCart('e43638ce-6aa0-4b85-b27f-e1d07eb678c6', 1);
     expect(cart.length).toEqual(1);
     expect(localStorage.setItem).toHaveBeenCalledTimes(1);
