@@ -114,4 +114,30 @@ describe('test suite: renderOrderSummary', () => {
       document.querySelector(`.js-product-price-${productId2}`).innerText
     ).toEqual(`$20.95`);
   });
+
+
+  // Tests for updating the delivery options.
+  it('updates the delivery option', () => {
+    // Select the 3rd delivery option for productId1.
+    document.querySelector(`.js-delivery-option-${productId1}-3`).click();
+
+    // Check "checked" property is true after clicking the 3 rd delivery option for productId1.
+    expect(
+      document.querySelector(`.js-delivery-option-input-${productId1}-3`).checked
+    ).toEqual(true);
+
+    expect(cart.length).toEqual(2);
+    expect(cart[0].productId).toEqual(productId1);
+    expect(cart[0].deliveryOptionId).toEqual('3');
+
+    expect(
+      document.querySelector('.js-payment-summary-shipping')
+        .innerText
+    ).toEqual('$14.98');
+
+    expect(
+      document.querySelector('.js-payment-summary-total')
+        .innerText
+    ).toEqual('$63.50');
+  });
 });
