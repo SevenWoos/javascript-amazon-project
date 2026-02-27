@@ -28,3 +28,16 @@ export function getDeliveryOption(deliveryOptionId) {
   // Set default delivery option if none selected.
   return deliveryOption || deliveryOptions[0];
 };
+
+// Function to check validity of a delivery option id.
+export function validDeliveryOption(deliveryOptionId) {
+  let valid = false;
+
+  deliveryOptions.forEach((option) => {
+    if (option.id === deliveryOptionId) {
+      valid = true;
+    }
+  });
+
+  return valid;
+};
