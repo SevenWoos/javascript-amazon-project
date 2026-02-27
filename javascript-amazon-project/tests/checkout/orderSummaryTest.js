@@ -41,6 +41,12 @@ describe('test suite: renderOrderSummary', () => {
     renderOrderSummary();
   });
 
+  // afterEach hook to cleanup the HTML after each spec.
+  afterEach(() => {
+    document.querySelector('.js-test-container')
+      .innerHTML = '';
+  });
+
   it('displays the cart', () => {
     // Check if we have 2 cart-item-containers
     expect(
@@ -55,10 +61,6 @@ describe('test suite: renderOrderSummary', () => {
     expect(
       document.querySelector(`.js-product-quantity-${productId2}`).innerText
     ).toContain('Quantity: 1');
-
-    // Clear the HTML
-    document.querySelector('.js-test-container')
-      .innerHTML = '';
   });
 
   // Checks if "delete" link works correctly.
@@ -82,9 +84,5 @@ describe('test suite: renderOrderSummary', () => {
     // Is cart array updated.
     expect(cart.length).toEqual(1);
     expect(cart[0].productId).toEqual(productId2);
-
-    // Clear the HTML
-    document.querySelector('.js-test-container')
-      .innerHTML = '';
   });
 });
