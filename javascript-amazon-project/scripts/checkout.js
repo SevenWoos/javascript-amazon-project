@@ -10,14 +10,28 @@ import {loadCart} from '../data/cart.js';
 // Async Await = Shortcut for Promises.
 // Async makes a function return a promise.
 async function loadPage() {
-  // Await lets you write async code like normal code. Can only be used inside async function and on PROMISES.
-  await loadProductsFetch();
+  // Try and catch for error handling.
+  // Try contains code that could cause an error.
+  try {
+    // throw() manually creates an error. Value gets saved in catch() parameter.
+    // throw 'error1';
 
-  const value = await new Promise((resolve) => {
-    loadCart(() => {
-      resolve('value3');
+    // Await lets you write async code like normal code. Can only be used inside async function and on PROMISES.
+    await loadProductsFetch();
+
+    // reject() parameter in Promise lets you create an error in the future.
+    const value = await new Promise((resolve, reject) => {
+      // throw 'error2';
+      loadCart(() => {
+        // reject('error3');
+        resolve('value3');
+      });
     });
-  });
+  
+  // Catches and handles error.
+  } catch (error) {
+    console.log('Unexpected error. Please try again later.');
+  }
 
   renderCheckoutHeader();
   renderOrderSummary();
