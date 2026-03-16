@@ -88,5 +88,20 @@
         </div>
       </div>
     </div>
+
+    <!-- Set URL parameters in search bar with '?'' -->
+    <!-- Example: http://127.0.0.1:5500/javascript-amazon-project/tracking.html?orderId=123 -->
+
+
+    <!-- Set MULTIPLE URL params with '&' -->
+    <!-- http://127.0.0.1:5500/javascript-amazon-project/tracking.html?orderId=123&productId=456 -->
+    <script>
+      // Get parameters out of URL with built-in function URL.
+      const url = new URL(window.location.href);
+
+      // Get URL Parameters to save data(search parameters).
+      console.log(url.searchParams.get('orderId'));
+      console.log(url.searchParams.get('productId'));
+    </script>
   </body>
 </html>
