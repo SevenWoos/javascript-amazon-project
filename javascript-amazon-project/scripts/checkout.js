@@ -1,7 +1,7 @@
 import {renderCheckoutHeader} from './checkout/checkoutHeader.js';
 import {renderOrderSummary} from './checkout/orderSummary.js';
 import {renderPaymentSummary} from './checkout/paymentSummary.js';
-import {loadProducts} from '../data/products.js';
+import {loadProducts, loadProductsFetch} from '../data/products.js';
 import {loadCart} from '../data/cart.js';
 // import '../data/cart-class.js';
 // import '../data/backend-practice.js';
@@ -11,11 +11,7 @@ import {loadCart} from '../data/cart.js';
 
 // promise.all() lets us run multiple promises at the SAME TIME, and wait for all of them to finish. Use an array of promises.
 Promise.all([
-  new Promise((resolve) => {
-    loadProducts(() => {
-      resolve('value1');
-    });
-  }), 
+  loadProductsFetch(), 
 
   new Promise((resolve) => {
     loadCart(() => {
